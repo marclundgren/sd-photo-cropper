@@ -29,32 +29,15 @@ code {
 
 /* Header styles */
 .App-header, .header {
-  background-color: #282c34;
-  color: white;
   font-size: calc(10px + 2vmin);
   padding: 1rem;
   text-align: center;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-/* Logo animation */
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* Main content area */
@@ -76,13 +59,13 @@ code {
   bottom: 0;
 }
 
-/* Controls */
 .controls {
   position: sticky;
   bottom: 0;
   background-color: white;
   z-index: 10;
   padding: 1rem;
+  gap: 0.5rem;
   display: grid;
   align-items: center;
   grid-row-gap: 0;
@@ -102,16 +85,18 @@ code {
 .zoom-range {
   -webkit-appearance: none;
   -moz-appearance: none;
+  appearance: none;
   height: 2px;
   background: #3f51b5;
   width: 100%;
-  margin: 1rem 0;
+  
 }
 
 .zoom-range::-moz-range-thumb,
 .zoom-range::-webkit-slider-thumb {
   -webkit-appearance: none;
   -moz-appearance: none;
+  appearance: none;
   border: 1px solid #3f51b5;
   background: #3f51b5;
   border-radius: 50%;
@@ -125,20 +110,13 @@ code {
   box-shadow: 0px 0px 0px 8px rgba(63, 81, 181, 0.16);
 }
 
-/* Button styles */
-.button {
-  background-color: white;
-}
-
-.button.active {
-  background-color: #61dafb;
-  color: white;
-}
-
 /* Media queries */
 @media (max-width: 768px) {
   .App-header {
     padding: 1rem;
+  }
+  .controls .zoom-range {
+    margin: 1rem 0;
   }
 }
 
@@ -147,8 +125,147 @@ code {
     grid-template-areas: "startover prev zoom next export";
     grid-template-columns: auto auto 1fr auto auto;
   }
+}
 
-  .controls .zoom-range {
-    margin: 0 1rem;
+/* the props */
+@import "https://unpkg.com/open-props";
+
+/* optional imports that use the props */
+@import "https://unpkg.com/open-props/normalize.min.css";
+@import "https://unpkg.com/open-props/buttons.min.css";
+
+/* just dark or light themes */
+@import "https://unpkg.com/open-props/normalize.dark.min.css";
+@import "https://unpkg.com/open-props/buttons.dark.min.css";
+@import "https://unpkg.com/open-props/normalize.light.min.css";
+@import "https://unpkg.com/open-props/buttons.light.min.css";
+
+/* individual imports */
+@import "https://unpkg.com/open-props/indigo.min.css";
+@import "https://unpkg.com/open-props/indigo-hsl.min.css";
+@import "https://unpkg.com/open-props/easings.min.css";
+@import "https://unpkg.com/open-props/animations.min.css";
+@import "https://unpkg.com/open-props/sizes.min.css";
+@import "https://unpkg.com/open-props/gradients.min.css";
+/* see PropPacks for the full list */
+
+/* use data-theme attribute to switch between light and dark themes */
+
+[data-theme="dark"] {
+  --gray-0: hsl(206, 10%, 10%);
+  --gray-1: hsl(206, 10%, 20%);
+  --gray-2: hsl(206, 10%, 30%);
+  --gray-3: hsl(206, 10%, 40%);
+  --gray-4: hsl(206, 10%, 50%);
+  --gray-5: hsl(206, 10%, 60%);
+  --gray-6: hsl(206, 10%, 70%);
+  --gray-7: hsl(206, 10%, 80%);
+  --gray-8: hsl(206, 10%, 90%);
+  --gray-9: hsl(206, 10%, 95%);
+
+  --blue-0: hsl(206, 100%, 95%);
+  --blue-1: hsl(206, 100%, 90%);
+  --blue-2: hsl(206, 100%, 85%);
+  --blue-3: hsl(206, 100%, 80%);
+  --blue-4: hsl(206, 100%, 70%);
+  --blue-5: hsl(206, 100%, 60%);
+  --blue-6: hsl(206, 100%, 50%);
+  --blue-7: hsl(206, 100%, 40%);
+  --blue-8: hsl(206, 100%, 30%);
+  --blue-9: hsl(206, 100%, 20%);
+  --blue-10: hsl(206, 100%, 10%);
+
+  --indigo-0: hsl(235, 100%, 95%);
+  --indigo-1: hsl(235, 100%, 90%);
+  --indigo-2: hsl(235, 100%, 85%);
+  --indigo-3: hsl(235, 100%, 80%);
+  --indigo-4: hsl(235, 100%, 70%);
+  --indigo-5: hsl(235, 100%, 60%);
+  --indigo-6: hsl(235, 100%, 50%);
+  --indigo-7: hsl(235, 100%, 40%);
+  --indigo-8: hsl(235, 100%, 30%);
+  --indigo-9: hsl(235, 100%, 20%);
+  --indigo-10: hsl(235, 100%, 10%);
+}
+
+html {
+  --text-1: var(--gray-9);
+  --text-2: var(--gray-7);
+
+  @media (--OSdark) {
+    --text-1: var(--gray-1);
+    --text-2: var(--gray-2);
   }
+}
+
+/* colors for .header, .controls */
+
+.controls, .header {
+  background-color: var(--gray-0);
+  color: var(--gray-6);
+
+  @media (--OSdark) {
+    background-color: var(--gray-8);
+    color: var(--gray-2);
+  }
+}
+
+button.blue {
+  color: var(--blue-6);
+  background-color: var(--blue-0);
+  border: 1px solid var(--blue-1);
+  text-shadow: 0 1px 0 var(--blue-2);
+
+  &:hover {
+    background-color: var(--blue-1);
+  }
+}
+
+button.indigo {
+  color: var(--indigo-6);
+  background-color: var(--indigo-0);
+  border: 1px solid var(--indigo-1);
+  text-shadow: 0 1px 0 var(--indigo-2);
+
+  &:hover {
+    background-color: var(--indigo-1);
+  }
+}
+
+button.secondary {
+  color: var(--gray-6);
+  background-color: var(--gray-0);
+  border: 1px solid var(--gray-1);
+  text-shadow: 0 1px 0 var(--gray-2);
+
+  &:hover {
+    background-color: var(--gray-1);
+  }
+}
+
+button.soft-warning {
+  color: var(--yellow-6);
+  background-color: var(--yellow-0);
+  border: 1px solid var(--yellow-1);
+  text-shadow: 0 1px 0 var(--yellow-2);
+
+  &:hover {
+    background-color: var(--yellow-1);
+  }
+}
+
+button.disabled, button:disabled {
+  color: var(--gray-6);
+  background-color: var(--gray-0);
+  border: 1px solid var(--gray-1);
+  text-shadow: 0 1px 0 var(--gray-2);
+
+  &:hover {
+    background-color: var(--gray-0);
+  }
+}
+
+h1.title {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
 }

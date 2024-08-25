@@ -4,6 +4,7 @@ import { FileUploader } from "react-drag-drop-files";
 import { useImage } from "./hooks/useImage";
 import JSZip from "jszip";
 import "./App.css";
+import ThemeSwitcher from "./components/ThemeSwitcher";
 
 type Crop = { x: number; y: number; width: number; height: number; unit: "%" };
 
@@ -33,6 +34,7 @@ const ImageUploadAndCrop = () => {
   });
 
   const [zoom, setZoom] = useState<number>(1);
+  const [exporting, setExporting] = useState(false);
 
   const image = useImage({files, index});
 
@@ -67,6 +69,8 @@ const ImageUploadAndCrop = () => {
 
   const handleExport = useCallback(() => {
     if (!croppedImages.length) return;
+
+    setExporting(true);
 
     const zip = new JSZip();
     const promises = croppedImages.map(({ file, image, croppedAreaPixels }) => {
@@ -110,16 +114,21 @@ const ImageUploadAndCrop = () => {
           link.href = URL.createObjectURL(blob);
           link.click();
           URL.revokeObjectURL(link.href);
+
+          setExporting(false);
         }
       });
     });
-  }, [croppedImages]);
+  }, [croppedImages, setExporting]);
 
   return (
     <div className="App">
       {!files &&
         <>
-          <h1>SD Photo Cropper</h1>
+          <div className="header">
+            <h1>SD Photo Cropper</h1>
+            <ThemeSwitcher />
+          </div>
           <div className='main-content'>
             <p>This tool allows you to crop photos into 512x512 squares, which are compatible with stablediffusion and dreambooth.</p>
             <FileUploader
@@ -134,7 +143,10 @@ const ImageUploadAndCrop = () => {
 
       {files && (
         <>
-          <h1>SD Photo Cropper</h1>
+          <div className="header">
+            <h1>SD Photo Cropper</h1>
+            <ThemeSwitcher />
+          </div>
           <div className='main-content'>
             <div className="crop-container">
               <Cropper
@@ -167,7 +179,7 @@ const ImageUploadAndCrop = () => {
                 })
                 setZoom(1);
               }}
-              className='button'
+            
             >
               Start Over
             </button>
@@ -177,7 +189,7 @@ const ImageUploadAndCrop = () => {
               setCrop(croppedImages[newIndex]?.crop ?? {x: 0, y: 0, width: 0, height: 0, unit: "%"});
               setZoom(croppedImages[newIndex]?.zoom ?? 1);
             }}
-            className='button'
+          
             disabled={index - 1 < 0}>
               Prev
             </button>
@@ -194,7 +206,7 @@ const ImageUploadAndCrop = () => {
               className="zoom-range"
             />
 
-            <button className='button' onClick={() => {
+            <button onClick={() => {
               const newIndex = index + 1;
               setIndex(newIndex);
               setCrop(croppedImages[newIndex]?.crop ?? {x: 0, y: 0, width: 0, height: 0, unit: "%"});
@@ -205,8 +217,9 @@ const ImageUploadAndCrop = () => {
 
             <button
               type="button"
+              disabled={index !== files?.length - 1 || exporting}
               onClick={handleExport}
-              className={`${'button'} ${index === files?.length - 1 ? "active" : ""}`}
+              className={`${index === files?.length - 1 ? "indigo" : ""}`}
             >
               Export
             </button>
