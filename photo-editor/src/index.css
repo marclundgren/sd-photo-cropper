@@ -1,6 +1,11 @@
-body {
+/* Base styles */
+html, body, #root {
+  height: 100%;
   margin: 0;
   padding: 0;
+}
+
+body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
@@ -13,18 +18,49 @@ code {
     monospace;
 }
 
+/* App layout */
 .App {
+  text-align: center;
+  min-height: 100dvh;
+  min-height: 100vh; /* fallback for browsers that don't support dvh */
   display: grid;
   grid-template-rows: auto 1fr auto;
-  min-height: 100vh;
 }
 
-.header {
+/* Header styles */
+.App-header, .header {
+  background-color: #282c34;
+  color: white;
+  font-size: calc(10px + 2vmin);
   padding: 1rem;
   text-align: center;
 }
 
+.App-link {
+  color: #61dafb;
+}
+
+/* Logo animation */
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Main content area */
 .main-content {
+  flex: 1;
+  overflow-y: auto;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -40,23 +76,36 @@ code {
   bottom: 0;
 }
 
+/* Controls */
 .controls {
-  margin-top: auto;
+  position: sticky;
+  bottom: 0;
+  background-color: white;
+  z-index: 10;
   padding: 1rem;
-  /* display: flex; */
+  display: grid;
   align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 1rem;
+  grid-row-gap: 0;
+  grid-template-areas:
+    "zoom zoom zoom zoom"
+    "startover prev next export";
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
+.controls .zoom-range { grid-area: zoom; }
+.controls .start-over { grid-area: startover; }
+.controls .prev { grid-area: prev; }
+.controls .next { grid-area: next; }
+.controls .export { grid-area: export; }
+
+/* Zoom range input */
 .zoom-range {
   -webkit-appearance: none;
   -moz-appearance: none;
   height: 2px;
   background: #3f51b5;
-  width: 200px;
-  margin: 0 1rem;
+  width: 100%;
+  margin: 1rem 0;
 }
 
 .zoom-range::-moz-range-thumb,
@@ -76,72 +125,23 @@ code {
   box-shadow: 0px 0px 0px 8px rgba(63, 81, 181, 0.16);
 }
 
-.file-list {
-  padding: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
+/* Button styles */
+.button {
+  background-color: white;
 }
 
-.file-list p {
-  background-color: #f0f0f0;
-  padding: 0.5rem;
-  border-radius: 4px;
-  margin: 0;
+.button.active {
+  background-color: #61dafb;
+  color: white;
 }
 
-/* @media (max-width: 768px) {
-  .controls {
-    flex-direction: column;
+/* Media queries */
+@media (max-width: 768px) {
+  .App-header {
+    padding: 1rem;
   }
+}
 
-  .zoom-range {
-    width: 100%;
-    margin: 1rem 0;
-  }
-} */
-
-/* Small screens */
-/* @media (max-width: 768px) { */
-  .zoom-range {
-    width: 100%;
-    margin: 1rem 0;
-  }
-  .controls {
-    display: grid;
-    grid-row-gap: 0;
-    /* grid-template-areas:
-      "zoom"
-      "startover prev next export"; */
-    grid-template-areas:
-      "zoom zoom zoom zoom"
-      "startover prev next export";
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-  }
-
-  .controls .zoom-range {
-    grid-area: zoom;
-  }
-
-  .controls .start-over {
-    grid-area: startover;
-  }
-
-  .controls .prev {
-    grid-area: prev;
-  }
-
-  .controls .next {
-    grid-area: next;
-  }
-
-  .controls .export {
-    grid-area: export;
-  }
-/* } */
-
-/* Large screens */
 @media (min-width: 769px) {
   .controls {
     grid-template-areas: "startover prev zoom next export";
@@ -149,23 +149,6 @@ code {
   }
 
   .controls .zoom-range {
-    grid-area: zoom;
     margin: 0 1rem;
-  }
-
-  .controls .start-over {
-    grid-area: startover;
-  }
-
-  .controls .prev {
-    grid-area: prev;
-  }
-
-  .controls .next {
-    grid-area: next;
-  }
-
-  .controls .export {
-    grid-area: export;
   }
 }
